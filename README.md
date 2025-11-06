@@ -34,7 +34,4 @@ Recommended (package mode, from the parent directory of `fishbuddy/`):
 ## Configuration
 
 - The CLI loads `.env` at startup so secrets are not hard‑coded.  
-- You can also define variables in your IDE run configuration if preferred.  
-
-## Project structure
-
+- You can also define variables in your IDE run configuration if preferred.
