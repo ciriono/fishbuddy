@@ -1,0 +1,252 @@
+{
+    "cantons": {
+      "zh": {
+        "name": "Zürich",
+        "species": {
+          "brown trout": {
+            "name_de": "Forelle",
+            "min_size_cm": 24,
+            "bag_limit": 6,
+            "closed_seasons": [
+              {"from": "2025-10-01", "to": "2025-12-25"}
+            ],
+            "methods_allowed": ["fly", "spinner", "natural bait", "jig"],
+            "sources": [
+              {
+                "title": "Kanton Zürich Fischereivorschriften - Schonzeiten Zürichsee",
+                "url": "https://zh.ch/de/politik-und-recht/gesetze/beschlaffenheit/fischerei.html",
+                "retrieved_on": "2025-11-07"
+              }
+            ]
+          },
+          "lake trout": {
+            "name_de": "Seesaibling",
+            "min_size_cm": 20,
+            "bag_limit": 6,
+            "closed_seasons": [
+              {"from": "2025-10-01", "to": "2025-12-25"}
+            ],
+            "methods_allowed": ["fly", "spinner", "natural bait"],
+            "sources": [
+              {
+                "title": "Kanton Zürich Fischereivorschriften - Seesaibling",
+                "url": "https://zh.ch/de/politik-und-recht/gesetze/beschlaffenheit/fischerei.html",
+                "retrieved_on": "2025-11-07"
+              }
+            ]
+          },
+          "grayling": {
+            "name_de": "Äsche",
+            "min_size_cm": 30,
+            "bag_limit": 3,
+            "closed_seasons": [
+              {"from": "2025-02-01", "to": "2025-04-30"}
+            ],
+            "methods_allowed": ["fly", "nymph"],
+            "sources": [
+              {
+                "title": "Kanton Zürich Fischereivorschriften",
+                "url": "https://zh.ch/de/politik-und-recht/gesetze/beschlaffenheit/fischerei.html",
+                "retrieved_on": "2025-11-07"
+              }
+            ]
+          },
+          "pike": {
+            "name_de": "Hecht",
+            "min_size_cm": 45,
+            "bag_limit": 1,
+            "closed_seasons": [
+              {"from": "2025-03-01", "to": "2025-04-30"}
+            ],
+            "methods_allowed": ["spinner", "live bait", "dead bait"],
+            "sources": [
+              {
+                "title": "Kanton Zürich Fischereivorschriften",
+                "url": "https://zh.ch/de/politik-und-recht/gesetze/beschlaffenheit/fischerei.html",
+                "retrieved_on": "2025-11-07"
+              }
+            ]
+          },
+          "whitefish": {
+            "name_de": "Felchen",
+            "min_size_cm": 25,
+            "bag_limit": 8,
+            "closed_seasons": [
+              {"from": "2025-11-20", "to": "2025-12-31"}
+            ],
+            "methods_allowed": ["fly", "spinner"],
+            "sources": [
+              {
+                "title": "Kanton Zürich Fischereivorschriften",
+                "url": "https://zh.ch/de/politik-und-recht/gesetze/beschlaffenheit/fischerei.html",
+                "retrieved_on": "2025-11-07"
+              }
+            ]
+          },
+          "perch": {
+            "name_de": "Egli",
+            "min_size_cm": 15,
+            "bag_limit": 10,
+            "closed_seasons": [],
+            "methods_allowed": ["spinner", "jig", "live bait"],
+            "sources": [
+              {
+                "title": "Kanton Zürich Fischereivorschriften",
+                "url": "https://zh.ch/de/politik-und-recht/gesetze/beschlaffenheit/fischerei.html",
+                "retrieved_on": "2025-11-07"
+              }
+            ]
+          }
+        }
+      },
+      "be": {
+        "name": "Bern",
+        "species": {
+          "brown trout": {
+            "name_de": "Forelle",
+            "min_size_cm": 24,
+            "bag_limit": 6,
+            "closed_seasons": [
+              {"from": "2025-10-01", "to": "2025-12-25"}
+            ],
+            "methods_allowed": ["fly", "spinner", "natural bait", "jig"],
+            "sources": [
+              {
+                "title": "Kanton Bern Reglement über die Fischerei",
+                "url": "https://weu.be.ch/de/start.html",
+                "retrieved_on": "2025-11-07"
+              }
+            ]
+          },
+          "grayling": {
+            "name_de": "Äsche",
+            "min_size_cm": 35,
+            "bag_limit": 3,
+            "closed_seasons": [
+              {"from": "2025-01-01", "to": "2025-04-30"}
+            ],
+            "methods_allowed": ["fly", "nymph"],
+            "sources": [
+              {
+                "title": "Kanton Bern Reglement über die Fischerei",
+                "url": "https://weu.be.ch/de/start.html",
+                "retrieved_on": "2025-11-07"
+              }
+            ]
+          },
+          "pike": {
+            "name_de": "Hecht",
+            "min_size_cm": 45,
+            "bag_limit": 1,
+            "closed_seasons": [
+              {"from": "2025-03-01", "to": "2025-04-30"}
+            ],
+            "methods_allowed": ["spinner", "live bait"],
+            "sources": [
+              {
+                "title": "Kanton Bern Reglement über die Fischerei",
+                "url": "https://weu.be.ch/de/start.html",
+                "retrieved_on": "2025-11-07"
+              }
+            ]
+          },
+          "lake trout": {
+            "name_de": "Seesaibling",
+            "min_size_cm": 20,
+            "bag_limit": 6,
+            "closed_seasons": [
+              {"from": "2025-10-01", "to": "2025-12-25"}
+            ],
+            "methods_allowed": ["fly", "spinner", "natural bait"],
+            "sources": [
+              {
+                "title": "Kanton Bern Reglement über die Fischerei",
+                "url": "https://weu.be.ch/de/start.html",
+                "retrieved_on": "2025-11-07"
+              }
+            ]
+          }
+        }
+      },
+      "ti": {
+        "name": "Ticino",
+        "species": {
+          "brown trout": {
+            "name_de": "Forelle",
+            "min_size_cm": 20,
+            "bag_limit": 8,
+            "closed_seasons": [
+              {"from": "2025-10-01", "to": "2025-12-31"}
+            ],
+            "methods_allowed": ["fly", "spinner", "natural bait"],
+            "sources": [
+              {
+                "title": "Cantone Ticino Regolamenti di pesca",
+                "url": "https://www.ti.ch/",
+                "retrieved_on": "2025-11-07"
+              }
+            ]
+          },
+          "pike": {
+            "name_de": "Hecht",
+            "min_size_cm": 40,
+            "bag_limit": 2,
+            "closed_seasons": [
+              {"from": "2025-03-01", "to": "2025-05-15"}
+            ],
+            "methods_allowed": ["spinner", "live bait"],
+            "sources": [
+              {
+                "title": "Cantone Ticino Regolamenti di pesca",
+                "url": "https://www.ti.ch/",
+                "retrieved_on": "2025-11-07"
+              }
+            ]
+          }
+        }
+      },
+      "ge": {
+        "name": "Genève",
+        "species": {
+          "brown trout": {
+            "name_de": "Forelle",
+            "min_size_cm": 23,
+            "bag_limit": 5,
+            "closed_seasons": [
+              {"from": "2025-10-15", "to": "2025-12-31"}
+            ],
+            "methods_allowed": ["fly", "spinner", "natural bait"],
+            "sources": [
+              {
+                "title": "Canton Genève Réglementations de pêche",
+                "url": "https://www.ge.ch/",
+                "retrieved_on": "2025-11-07"
+              }
+            ]
+          }
+        }
+      },
+      "sg": {
+        "name": "St. Gallen",
+        "species": {
+          "brown trout": {
+            "name_de": "Forelle",
+            "min_size_cm": 24,
+            "bag_limit": 6,
+            "closed_seasons": [
+              {"from": "2025-10-01", "to": "2025-12-25"}
+            ],
+            "methods_allowed": ["fly", "spinner", "natural bait"],
+            "sources": [
+              {
+                "title": "Kanton St. Gallen Fischereivorschriften",
+                "url": "https://www.sg.ch/",
+                "retrieved_on": "2025-11-07"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+  
