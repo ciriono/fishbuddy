@@ -1,4 +1,3 @@
-# services/rules.py
 import json, os
 from datetime import date
 

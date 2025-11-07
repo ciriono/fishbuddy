@@ -1,4 +1,3 @@
-# services/species.py
 import requests
 import json
 import math

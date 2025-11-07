@@ -1,32 +1,93 @@
 # services/geocode.py
 import requests
+import json
 
-def geocode_place(name: str, count: int = 1, language: str = "de", timeout: float = 10.0) -> dict:
-    url = "https://geocoding-api.open-meteo.com/v1/search"
-    r = requests.get(url, params={"name": name, "count": count, "language": language, "format": "json"}, timeout=timeout)
-    r.raise_for_status()
-    res = (r.json() or {}).get("results") or []
-    if not res:
-        return {}
-    top = res[0]
-    return {"lat": top.get("latitude"), "lon": top.get("longitude"), "name": top.get("name"),
-            "admin1": top.get("admin1"), "country_code": top.get("country_code")}
+def geocode_place(name: str, language: str = "de", timeout: float = 10.0) -> dict:
+    """
+    Geocode a place name to lat/lon using Open-Meteo Geocoding API.
+    Returns {"name", "lat", "lon"} or {"error": "..."}
+    """
+    try:
+        url = "https://geocoding-api.open-meteo.com/v1/search"
+        params = {
+            "name": name,
+            "language": language,
+            "count": 1,
+            "format": "json"
+        }
+        
+        r = requests.get(url, params=params, timeout=timeout)
+        r.raise_for_status()
+        data = r.json() or {}
+        
+        results = data.get("results", [])
+        if not results:
+            return {"error": f"no_results_for_{name}"}
+        
+        result = results[0]
+        return {
+            "name": result.get("name", name),
+            "lat": result.get("latitude"),
+            "lon": result.get("longitude"),
+            "country": result.get("country"),
+            "admin1": result.get("admin1"),  # Canton/State
+        }
+    except requests.exceptions.Timeout:
+        return {"error": "geocode_timeout"}
+    except requests.exceptions.RequestException as e:
+        return {"error": f"geocode_request_failed: {str(e)}"}
+    except Exception as e:
+        return {"error": f"geocode_failed: {str(e)}"}
 
-def canton_from_coords(lat: float, lon: float, timeout: float = 10.0) -> str | None:
-    url = "https://api3.geo.admin.ch/rest/services/api/MapServer/identify"
-    params = {
-        "geometryType": "esriGeometryPoint",
-        "geometry": f"{lon},{lat}",
-        "mapExtent": f"{lon-0.01},{lat-0.01},{lon+0.01},{lat+0.01}",
-        "tolerance": 0,
-        "layers": "all:ch.swisstopo.swissboundaries3d-kanton-flaeche.fill",
-        "returnGeometry": "false",
-        "imageDisplay": "400,400,96",
-        "lang": "de"
-    }
-    r = requests.get(url, params=params, timeout=timeout)
-    r.raise_for_status()
-    results = (r.json() or {}).get("results") or []
-    attrs = results[0].get("attributes") if results else None
-    return (attrs.get("kt_kz") or attrs.get("name")) if attrs else None
-
+def canton_from_place(name: str, language: str = "de", timeout: float = 10.0) -> dict:
+    """
+    Extract canton/state from a place name using geocoding.
+    Returns {"place", "canton"} or {"error": "..."}
+    """
+    try:
+        g = geocode_place(name, language=language, timeout=timeout)
+        
+        if "error" in g:
+            return {"error": g["error"], "place": name}
+        
+        # Map Swiss cantons
+        admin1 = g.get("admin1", "").upper()
+        canton_map = {
+            "ZURICH": "ZH",
+            "BERN": "BE",
+            "LUCERNE": "LU",
+            "URI": "UR",
+            "SCHWYZ": "SZ",
+            "OBWALDEN": "OW",
+            "NIDWALDEN": "NW",
+            "GLARUS": "GL",
+            "ZUG": "ZG",
+            "FRIBOURG": "FR",
+            "SOLOTHURN": "SO",
+            "BASEL-STADT": "BS",
+            "BASEL-LANDSCHAFT": "BL",
+            "SCHAFFHAUSEN": "SH",
+            "APPENZELL AUSSERRHODEN": "AR",
+            "APPENZELL INNERRHODEN": "AI",
+            "ST. GALLEN": "SG",
+            "GRAUBUNDEN": "GR",
+            "AARGAU": "AG",
+            "THURGAU": "TG",
+            "TICINO": "TI",
+            "VAUD": "VD",
+            "VALAIS": "VS",
+            "NEUCHATEL": "NE",
+            "JURA": "JU",
+            "GENEVA": "GE",
+        }
+        
+        canton = canton_map.get(admin1, "UNKNOWN")
+        
+        return {
+            "place": g.get("name"),
+            "canton": canton,
+            "admin1": admin1
+        }
+    
+    except Exception as e:
+        return {"error": f"canton_extraction_failed: {str(e)}", "place": name}

@@ -1,27 +1,57 @@
-import math, requests
+# services/hydro.py
+import requests
+import json
+import math
+import os
 
-def get_water_data(place: str, language: str = "de", timeout: float = 10.0) -> dict:
+def _haversine_km(lat1, lon1, lat2, lon2) -> float:
+    R = 6371.0
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = math.sin(dlat/2)**2 + math.cos(math.radians(lat1))*math.cos(math.radians(lat2))*math.sin(dlon/2)**2
+    return 2*R*math.asin(math.sqrt(a))
+
+def get_water_data(name: str, language: str = "de", timeout: float = 10.0) -> dict:
     """
-    Returns nearest station’s basic hydrology (water temperature, discharge) for the given place.
-    Uses FOEN public hydrology endpoints available online (or a JSON proxy when needed).
+    Resolve place then return nearby hydrology (water temp/flow).
+    Falls back gracefully if hydro proxy is unavailable.
     """
     from .geocode import geocode_place
-    g = geocode_place(place, language=language, timeout=timeout)
-    if not g:
-        return {"error": "geocode_failed"}
-    # Example approach: proxy with a public JSON that aggregates FOEN hydrodaten to simplify integration
-    # Note: replace with your chosen official/open endpoint once you pick a stable dataset
-    stations_url = "https://api.existenz.ch/hydro/locations"
-    stations = requests.get(stations_url, timeout=timeout).json()
-    # Find nearest by haversine (rough)
-    def dkm(a,b): 
-        import math
-        return 2*6371*math.asin(math.sqrt(
-            math.sin(math.radians((a["lat"]-b["lat"])/2))**2 +
-            math.cos(math.radians(a["lat"]))*math.cos(math.radians(b["lat"]))*
-            math.sin(math.radians((a["lon"]-b["lon"])/2))**2))
-    target = {"lat": g["lat"], "lon": g["lon"]}
-    nearest = min(stations, key=lambda s: dkm({"lat": s["lat"], "lon": s["lon"]}, target))
-    latest = requests.get(f'https://api.existenz.ch/hydro/{nearest["id"]}', timeout=timeout).json()
-    return {"place": g["name"], "station_id": nearest["id"], "station_name": nearest["name"],
-            "water_temp_c": latest.get("water_temp_c"), "discharge_m3s": latest.get("discharge_m3s")}
+    
+    try:
+        g = geocode_place(name, language=language, timeout=timeout)
+        if "error" in g:
+            return json.dumps({"error": "geocode_failed", "place": name})
+        
+        # Try to fetch hydro data from a proxy or fallback gracefully
+        base = os.environ.get("FOEN_PROXY_BASE", "https://api.existenz.ch/hydro")
+        
+        try:
+            stations = requests.get(f"{base}/locations", timeout=timeout).json()
+            if not stations:
+                return json.dumps({
+                    "place": g.get("name"),
+                    "note": "No hydrology data available; try again later."
+                })
+            
+            tgt = min(stations, key=lambda s: _haversine_km(g["lat"], g["lon"], s.get("lat", 0), s.get("lon", 0)))
+            latest = requests.get(f'{base}/{tgt["id"]}', timeout=timeout).json()
+            
+            result = {
+                "place": g.get("name"),
+                "station_id": tgt.get("id"),
+                "station_name": tgt.get("name"),
+                "water_temp_c": latest.get("water_temp_c"),
+                "discharge_m3s": latest.get("discharge_m3s")
+            }
+            return json.dumps(result)
+        
+        except Exception as e:
+            # Graceful fallback
+            return json.dumps({
+                "place": g.get("name"),
+                "note": f"Water data unavailable ({e.__class__.__name__}); check FOEN station data manually."
+            })
+    
+    except Exception as e:
+        return json.dumps({"error": f"hydro_failed: {str(e)}", "place": name})
